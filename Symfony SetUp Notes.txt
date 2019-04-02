@@ -1,0 +1,118 @@
+Symfony SetUp macOS Sierra, XAMPP 7.2.16 & LAMP Stack (Debian 9)
+
+1) Download, install and configure XAMPP 7.2.16
+	Hosts Configuration...
+		httpd.conf
+			verify
+				"Listen" on port (e.g. 80 or 8080)
+			
+			add
+				"Include path/to/httpd-vhosts.conf"
+		
+		httpd-vhosts.conf
+			add
+				<VirtualHost *:80>
+				    ServerAdmin webmaster@dummy-host2.example.com
+				    DocumentRoot "path/to/root"
+				    <Directory path/to/root>
+				        AllowOverride All
+				        Order Allow,Deny
+				        Allow from All
+				    </Directory>
+				    ServerName {server name}
+				    ErrorLog {error log}
+				    CustomLog {access log} common
+				</VirtualHost>
+
+2) To enable phpmyadmin open /etc/extra/httpd-xampp.conf
+	* beneath Alias /phpmyadmin "/opt/lampp/phpmyadmin"
+		- change "Require local" to "Require all granted"
+
+3) Restart apache service
+
+4) In /etc/hosts (hidden in the mac (Sierra) hard drive root dir.)
+	* Fetch the ip address found after starting xampp
+	* In the "Host Database" section
+		- add a new line with the ip address followed by a space then the vhost name added in step 1 above
+
+5) Go to the root of the virtual volume created in step 1
+
+6) Visit "https://getcomposer.org/download/" to fetch the following CLI commands then enter them into the CLI
+	* Note: ALWAYS fetch the following commands from the Web as it is updated frequently
+	* Also, note "--install-dir=/bin" in the 4th command below. This is the location where composer is to be installed
+
+		php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"	
+	
+		php -r "if (hash_file('sha384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+
+		php composer-setup.php --install-dir=/bin (you can also navigate to the dir where you want to install it)
+
+		php -r "unlink('composer-setup.php');"	
+
+7) Use the CLI to rename the "composer.phar" file to just "composer". It will be located in the directory specified in the 4th command above
+
+8) Run "composer require symfony/web-server-bundle --dev" in the CLI
+
+9) Navigate to where you want to create your symfony project and run: composer create-project symfony/website-skeleton my-project
+
+10) Start the symfony Web server... (run from within your project)
+	- If running on a virtual volume run "php bin/console server:start 0.0.0.0:8000" in the CLI
+	- If not running on a virtual volume run "php bin/console server:run" in the CLI
+
+	* Note: NEVER listen to all interfaces (i.e. 0.0.0.0 above) on a computer that is directly accessible from the Internet
+
+11) To configure Apache run "composer require symfony/apache-pack" in the CLI (in your project dir.)
+	* Note: See "https://symfony.com/doc/current/setup/web_server_configuration.html"
+
+12) Install Symfony Maker by running "composer require symfony/maker-bundle --dev" in the CLI (in your project dir.)
+
+13) run: composer require symfony/templating 
+		* This is needed to use the php template engine
+
+14) Replace 'twig' with 'php' in /config/packages/framework.yaml (example below)
+		templating:
+        engines: ['php']
+
+15) Install nodejs and npm by running the following in the CLI
+		sudo apt update
+		curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+		sudo apt-get install -y nodejs
+
+16) Install yarn
+	sudo npm install yarn -g
+
+17) Run the following in the CLI
+		composer require webpack-encore
+
+		yarn add sass-loader node-sass --dev
+
+		yarn add bootstrap --dev
+
+		yarn add bootstrap-sass --dev
+
+		yarn add jquery popper.js --dev
+
+		yarn run encore dev
+
+18) Add the below entry to webpack.config.js
+	.addStyleEntry('global', './assets/css/app.css')
+
+19) Create the directory /src/Resources/views in your project (to store views)
+
+20) run: composer require symfony/orm-pack in the CLI
+
+21) open .env and edit "DATABASE_URL" (mysql://db_user:db_password@127.0.0.1:3306/db_name) e.g. mysql://root@localhost/Fitness
+
+22) run: php bin/console doctrine:database:create in the CLI
+
+		* creates entities
+		* you can add the entity (table) fields later
+
+
+Some Usefull Commands...
+
+	See Project Routes:
+		php bin/console debug:route
+
+	Generate a Controller
+  		php bin/console make:controller

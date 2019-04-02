@@ -1,0 +1,27 @@
+Build an application using the Symfony frame work that can manage the creation, updating, reading and deleting (CRUD) of products and product categories.
+
+	-Products must have but are not limited to the following fields:
+			- Name
+			- Description
+			- Price
+			- Sale Price
+			- Active
+			- On Sale
+			- Category
+			- Product Image
+
+	-Categories must have but are not limited to the following fields:
+			- name
+			- Description
+
+- Create A category called "Fitness" and give it a sub category called "Workout Supplies", save to database.
+- Create a Product called "Dumbbell 9000" with a normal price of $99 but is %10 off on sale and place it in the "Workout Supplies" Category. , save to database.
+- Save your products without having to reload the page (ajax).
+- Style with Bootstrap
+- Add at least 1 additional feature not detailed in this test.
+	- Do whatever you think is going to make this better.
+- Save to public git repo
+	- Include ReadMe with instructions on how to launch your application locally.
+-Include .sql export of your database
+-Use any code libaries you'd like. This test should take 1-3 hours of development time. 
+-You have 5 business days to complete.

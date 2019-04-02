@@ -1,0 +1,20 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+fitness_home:
+    path: /
+    controller: App\Controller\FitnessController::index
+
+app_product:
+    path: /products
+    controller: App\Controller\FitnessController::product
+
+app_category:
+    path: /categories
+    controller: App\Controller\FitnessController::category
+
+app_sub_category:
+    path: /subcategories
+    controller: App\Controller\FitnessController::subCategory
+    
